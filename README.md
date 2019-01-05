@@ -1,1 +1,3 @@
 # stats
+
+print('hello world')
