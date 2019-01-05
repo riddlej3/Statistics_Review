@@ -1,0 +1,98 @@
+#Law of total probability and Bayes Theorem are closely related to each other
+
+#LoTP: for the P(A) that is hard to find...
+#  P(A) = P(A ∩ B)+P(A ∩ Bcomp)
+
+#Imagine the billboard example and let's assume it's easy to get the prob of commercial and difficult the prob of billboard. If we know the likelihood of both (maybe via people who see the commercial, take a survey and say they also saw the billboard) and the likelihood of someone not seeing the commercial but seeing the billboard, we can find the probability of someone seeing the billboard.
+
+C = .4
+C_and_B = .1
+Ccomp_and_B = .2
+#then
+B = C_and_B + Ccomp_and_B
+print('LoTP for P(B): ',round(B,2))
+
+#LoTP extention to a sample space of Bi
+# Σ P(A ∩ Bi) 
+
+#A?
+b1_int = .1
+b2_int = .12
+b3_int = .19
+b4_int = .15
+#Ex.
+A = b1_int + b2_int + b3_int + b4_int 
+
+#LoTP  using conditional probabilities
+#remember back to conditional prob where... P(A ∩ B) = P(A|B)*P(B)
+
+#P(A) = P(A|B)*P(B) + P(A|Bcomp)*P(Bcomp)
+
+#Same thing can therefore be applied to more complex scenarios
+#Σ P(A ∩ Bi) = Σ P(A|Bi)*P(Bi)
+
+#Example:
+#Stock analyst thinks 75% that market increases if economy is strong next year and 30% that market increases if econ is bad. Also thinks the prob of strong econ = 80%. Therefore...
+
+prob_increase_s = .75
+prob_increase_w = .3
+prob_econ_s = .8
+
+prob_increase = (prob_increase_s*prob_econ_s)+(prob_increase_w*(1-prob_econ_s))
+
+print('prob of market increase: ',prob_increase)
+
+#######BAYES THEOREM#######
+
+#essential components of Bayes
+
+
+###############################################
+#            P(A ∩ B)
+#1: P(A|B) = ---------     Foundational Equation (we want know P(A|B).
+#              P(B)
+###############################################
+
+
+#2: P(A ∩ B) = P(B|A)*P(A)
+
+#3: P(A) = P(B|A)*P(A) + P(B|Acomp)*P(Acomp)
+
+
+###################################################
+#                  P(B|A)*P(A)
+#4: P(A|B) =  ---------------------       FINAL EQUATION for two events
+#        P(B|A)*P(A) + P(B|Acomp)*P(Acomp)
+###################################################
+
+#Ex: 
+
+# P(True Positive) = .92
+# P(False Negative) = .04
+# P(infected pop) = .001
+# P(non-infected pop) = .999
+# SampleSpace = 1
+
+# What is the probability that a person is ill given a positive test result
+
+#              P(i ∩ PT)  or            P(PT|i)*P(i)
+#      P(i|PT) ------------------------------------------------------
+#                P(PT)    or   P(PT|i)*P(i) + P(PT|icomp)*P(icomp)
+#PT = positive test
+
+TP = .92
+FN = .04
+i = .001
+ni = .999
+
+Bayes =  (TP*i)/((TP*i)+(FN*ni))
+print(Bayes)
+
+
+
+
+#Extended Bayes Theorem for more than 2 events
+
+#                P(A|B1)*P(B1)
+#  P(B1|A) = ------------------------
+#               Σ P(A|Bi)*P(Bi)
