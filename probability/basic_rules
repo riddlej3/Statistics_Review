@@ -1,1 +1,27 @@
-#test
+#basic probability
+#incls = [rule of compliments, rule of unions, prob of mutually exclusive events]
+
+#rule of compliments: essentially if the probability of event A occuring is P(A), what  the prob of event A not occuring? 
+
+a1 = .667
+complement_a = 1-a1
+print(round(complement_a,2))
+
+#rule of unions: if there are two events in our probability space, what is the total probability of one, or both of the events occuring? 
+
+#P(A U B) = P(A) + P(B) - P(A ∩ B)
+
+a2 = .63
+b2 = .2
+i = .1
+
+print(round(a2 + b2 - i,2))
+
+#mutually exclusive events
+# P(A U B) = P(A) + P(B) 
+# P(A ∩ B) = 0
+
+a3 = .1
+b3 = .3
+
+print(round(a3+b3),2)
