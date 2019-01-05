@@ -1,0 +1,29 @@
+#the magazine Forbes publishes annually a list of the world's wealthiest individuals. For 2007, the net worth of the 20 richest individuals, in billions of dollar, in no particular order, is as follow...
+
+#finding the pth percentile (that value below which lie p% of the population) = (n+1)P/100 where n is the number of observations and P is the percentile usually in decimal form.
+
+
+net_wealth = [33,26,24,21,19,20,18,18,52,56,27,22,18,49,22,20,23,32,20,18]
+print('sorted list: ',sorted(net_wealth))
+print('length of observations: ',len(net_wealth))
+
+def percentile(observations,P):
+    return (len(observations)+1)*P/100
+
+def percentile_value(observations,P):
+  pos = percentile(observations,P)
+  obs = sorted(observations)
+  if pos % 2 !=0:
+    n1 = obs[int(pos//1)-1]
+    n2 = obs[(int(pos))//1]
+    return (pos%1 * (n2-n1))+n1
+  else:
+    return obs.index(int(pos))
+
+def percentile_range(observations,P1,P2):
+    r1 = percentile_value(observations,P2) - percentile_value(observations,P1)
+    return r1
+
+print(percentile(net_wealth,90))
+print(round(percentile_value(net_wealth,75),2))
+print(round(percentile_range(net_wealth,25,75),2))
