@@ -1,1 +1,34 @@
-#test
+#conditional probability
+#finds the probability of an event A given the occurence another event, event B in our case.
+
+# P(A ∩ B)
+# --------- = P(A|B) #probability of A given B.
+#   P(B)
+
+#a boy is going to ask two girls out on a date. The boy things his probability of getting girl1 to say yes is .40 and that the probability of getting both girl1 and 2 to say yes is .1. What is the probability therefore of getting girl 2 to say yes given the probability that girl1 says yes?
+
+i = .1
+g1 = .4
+
+print('prob of g2 given g1: ',round(.1/.4,2))
+
+#an alternative equation you'll see if we change around the components of the equation is = 
+
+# P(A ∩ B) = P(A|B) * P(B)
+
+#if a consulting firm is vying for 2 jobs and know that the P(A) = .6 and that the P(B|A) = .5 what is P(A)?
+
+a2 = .6
+ba = .5
+
+print('P(intersect ab): ', .6 *.5)
+
+#40% of execs are women
+#21% of execs are top salary
+#6.4% woman and top salary level execs
+
+#  P(W ∩ TS)
+#  --------   = P(TS)
+#    P(W)
+
+print('Expected(TS | P(W ∩ TS): ',.064/.4)
