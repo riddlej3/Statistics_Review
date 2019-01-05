@@ -1,0 +1,24 @@
+#calculating permutations using python
+
+#permutations look to find the number of possible orderings of r objects among n total objects
+
+## Equation
+
+#           n!
+#     _____________
+#         (n-r)!
+
+#similar to combinations with the exception of the r! coefficient in the denominator of the formula.
+
+#Ex. I at work with a huge workload. I have 10 things that need to get done but can only afford to do 5. Of the 5, I need to figure out the best possible order to do them in. How many possible orders of r task among a pool of 10 tasks are there for me to choose from? What if I were to choose 1? 
+
+n = 10
+r = 5
+
+def factorial(x):
+  if x == 1:
+    return 1
+  else:
+    return x * factorial(x-1)
+
+print(factorial(n)/factorial(n-r))
