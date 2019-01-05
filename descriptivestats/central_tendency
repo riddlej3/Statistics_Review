@@ -1,1 +1,28 @@
-#test
+#measures of central tendency
+#most popular = [Mode, Mean, Median, Variance, SD]
+
+list1 = [1,1,1,1,1,1,1,1,2,3,4,5,5,5,5,5,5,6,7,8,9,10,8,6,4,2,0,4,8,4,5]
+
+#if two values have the same frequency there can be multiple modes
+def mode(list):
+  s1 = sorted(set(list))
+  freq = [list.count(i) for i in s1]
+  return s1.index(freq.index(max(freq)))
+print('Mode :',mode(list1))
+
+#mean of pop or sample? mean of sample would be divided by n-1 due to there being 1 degree of freedom in the list.
+def mean_pop(list):
+  return round(sum(list)/len(list),2)
+print('Mean_of_pop: ',mean_pop(list1))
+
+#Variance of pop would be divided solely by n number of observations. Instead we divide by n-1 as is the case with the mean
+def variance(list):
+  sum = 0
+  for i in list1:
+    sum = sum + (mean_pop(list) - i)**2
+  return round(sum / (len(list)-1),2)
+print('Sample_var: ',variance(list1))
+
+def sd(list):
+  return round(variance(list)**(1/2),2)
+print('Stdev: ',sd(list1))
