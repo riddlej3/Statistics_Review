@@ -1,0 +1,41 @@
+#formulas and examples for probabilistic independence
+#3 conditions of probabilistic independence
+
+#1: P(A|B) = P(A)
+#2: P(B|A) = P(B)
+#3: P(A ∩ B) = P(A)*P(B)
+
+#Independent does not mean mutually exclusive and therefore..
+#P(A U B) != P(A)+P(B)  there is still a likelihood of an intersection. That likelihood is however not at all influenced by one of the other events occurring. 
+
+#Prob of being exposed to both a billboard and a commercial for the same product. P(B) = .4  P(C) = .2. Both or independent events.
+
+Pb = .4
+Pc = .2
+i = .4*.2
+print('P(B∩C): ',round(i,2))
+
+#The probability of the intersection of various ind. events is therefore P(e1)*P(e2)*P(e3)...P(e4)
+
+#Free throw shooting of .5 shooting average shooting 10 free throws.
+P = .95
+n = 10
+
+print('prob of making all baskets: ', round(P**n,2))
+
+#The probability of the union of independent events:
+# P(A1 U A2 U A3 ... U Ai)
+# = 1-(P(Acomp1)*(Acomp2)*(Acomp3)...Acompi))
+
+#Ex: I'm shooting free-throws in bball. Assuming all my shots are independent, and I shoot with a scoring % of 70%, what is the % I'll make at least one shot? 
+
+P = .5
+n = 3
+print('P(of at least one made basket out of n shots: ',1-(1-P)**n)
+
+#ex2 probability of there being rotten wine in a bottle = 10%
+#in batch of 10, what's the prob that at least 1 will be rotten.
+
+P=.1
+n = 10
+print('P(rotten wine bottle: ', round(1-(1-.1)**n,2))
