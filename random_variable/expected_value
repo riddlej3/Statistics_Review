@@ -20,3 +20,31 @@ d = [1,2,3,4,5,6,7,8,9,10,11,12]
 p = [d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12]
 
 print('EV: ',round(sum([p[i-1]*i for i in d]),2))
+
+#Better Example
+
+#Suppose a company has a given probability distribution of selling x number of units each month. The profit function is equal to 2x-8000 meaning that each unit brings in $2.00 at a monthly total fixed cost of 8k.
+
+rev = 2
+exp = 8000
+x = [5000,6000,7000,8000,9000]
+p = [.2,.3,.2,.2,.1] 
+Ex2 = [x[i]*p[i] for i in list(range(len(x)))]
+Ex= sum([x[i]*p[i] for i in list(range(len(x)))])
+hx = [(x[i]*rev-exp)for i in list(range(len(x)))]
+X = [((x[i]*rev-exp)*p[i]) for i in list(range(len(x)))]
+EV = sum(X)
+print('EV for given month: ',EV)
+
+#Variance of discrete random variable
+
+#Formula: Σ (X-u)**2 *P(x)
+#so in example2 above...
+
+var = sum([((hx[i]-EV)**2)*p[i] for i in list(range(len(hx)))])
+var_x = sum([((x[i])**2)*p[i] for i in list(range(len(hx)))])
+var_table = [(i-EV) for i in hx]
+
+
+print('Var: ',round(var,2))
+print('SD: ',round(var**(1/2),2))
