@@ -1,0 +1,67 @@
+#Geometric & Hypergeometric discreet random variable distributions
+
+#############################################
+
+#GEOMETRIC DISTRIBUTION = calculates the probability of having one successful binary trial after x trials.
+
+#Formula = P(X=x) = p*(1-p)^(x-1)
+
+#Ex. 6 people are selected from a population. 30% of the population has received CPR training. What is the probability that the 6th person selected will be the first to have had a training?
+
+x = 6
+p1 = .3
+p0 = .7
+
+Geo1 = p1*p0**(x-1)
+Ex = 1/p1
+Vx = (1-p1)/p1**2
+
+print('GeoP: ',round(Geo1,3))
+print('E(X): ',round(Ex,2))
+print('V(X): ', round(Vx,2))
+
+
+##################################################
+
+#HYPERGEOMETRIC DISTRIBUTION = the probability of selecting n objects from N population of two types of objects where x of the 10 objects belong to type 1 and (n-x) objects belong to type 2. 
+
+#           (a)(N-a)
+#           (x)(n-x)
+# P(X=x) = ---------  
+#              (N)
+#              (n)
+
+#Ex. student body of 2000 students where 1100 are femail and 900 are male. Our task is to draw a random group of 10 students without replacement and figure out what the probability will be that 7 of those students will be female and the rest male. 
+
+N = 200
+F = 110
+M = 90
+n = 10
+f = 7
+m = 3
+
+def factorial(x):
+  if x == 1:
+    return 1
+  else:
+    return x * factorial(x-1)
+
+
+den = factorial(N)/(factorial(n)*factorial(N-n))
+num1 = factorial(F)/(factorial(f)*factorial(F-f))
+num2 = factorial(M)/(factorial(m)*factorial(M-m))
+
+print(round((num1*num2)/den,3))
+
+################################################
+#HyperGeo Distribution for more than 2 groups.
+
+# Essentially the same equation but we add a combinations equation to the top for the third group.
+
+
+#           (a)(N-a-b)(b)
+#           (x)(n-x-y)(y)
+# P(X=x) = ---------------  
+#                (N)
+#                (n)
+#
