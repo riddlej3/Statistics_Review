@@ -1,0 +1,22 @@
+#Expected Value is essentially the mean of the random variable distribution in question.
+
+#Formula Σ x*P(x)
+
+
+d1 = 0
+d2 = 1/36
+d3 = 2/36
+d4 = 3/36
+d5 = 4/36
+d6 = 5/36
+d7 = 6/36
+d8 = 5/36
+d9 = 4/36
+d10 = 3/36
+d11 = 2/36
+d12 = 1/36
+
+d = [1,2,3,4,5,6,7,8,9,10,11,12]
+p = [d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12]
+
+print('EV: ',round(sum([p[i-1]*i for i in d]),2))
