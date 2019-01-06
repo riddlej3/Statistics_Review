@@ -1,0 +1,95 @@
+#Hypothesis Testing
+
+#Hypothesis testing can be done either by creating a rejection region alpha or by assessing via the p alone or the p value and the associated type 1 type 2 error costs as is done likely mostly in industry. 
+
+#Significance Level = alpha
+
+#False Positive
+#False Negative
+#True Positive
+#True Negative
+
+#B and is the symbol for type II errors
+#POWER is = 1-B and is the probability that a false null hypothesis will be detected by the test.abs
+
+#Computing P-Value
+
+
+#               Xhat - H0
+#Formula = Z = --------------
+#                SD/sqrt(n)
+
+
+#Ex. for population mean
+#Null Hypothesis H0 = u >=1000
+#Alternative Hypothesis H1 = u <1000
+#so if Xhat >1000 we have nothing against the null hypothesis and won't reject it. 
+#in this example Xhat = 995
+
+import scipy.stats as st
+
+Xhat = 999
+H0 = 1000
+SD = 5
+n = 100
+
+Z = (Xhat-H0)/(SD/n**.5)
+print('ZValue of test: ',Z)
+
+#############################################
+
+#Left tailed and right tailed tests depend on the null hypothesis. If there are rejection regions on either side of the null hypothesis mean you use two if not one going in whichever region contradicts Ho.
+
+#############################################
+
+#T TEST for SAMPLE MEAN for HTest
+
+#FORMULA
+
+#       Xhat - u
+# Z = ------------------
+#       S/sqrt(n)
+
+#Ex. Filling cola into 2-liter bottles. Mean must be 2000 cm^3. N = 40 and sample mean is 1999.6 at alpha 5%.
+
+n = 40
+alpha = .05
+Xhat = 1999.6
+Ho = 2000
+S = 1.3
+
+T = (Xhat - Ho)/(S/40**.5)
+P = st.t.sf(T,n-1)
+print(1-P)
+print('T: ',round(Z,2),'PValue: ',round(P,4))
+
+#CASES NOT covered by Z or t Test statistic
+
+#1. The population is not normal and SD is unknown, however if the sample is large enough many statisticians will accept a t test here.
+#2. The population is not normal and the sample size is less than 30.
+
+###########################################
+
+#Testing Population Proportions
+# Use either binomial distribution or normal approximation.
+
+#Ex. Flipping a coin 25 times you get heads 8 times. Test to see if coin is fair using a 95% confidence level.
+#Two sided test using binomial distribution
+
+### No great examples for this in book.
+
+#p1 = .5
+#p2 = .5
+#n = 25
+#X = 8/25
+#s = 8
+#H0 = .5
+
+#def factorial(x):
+#  if x == 1:
+#    return 1
+#  else:
+#    return x * factorial(x-1)
+#
+#f = factorial(n)/(factorial(s)*factorial(n-s))
+#print('Binomial: ',f*p1**X*p2**(n-X))
