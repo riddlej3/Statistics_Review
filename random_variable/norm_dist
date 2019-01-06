@@ -1,0 +1,66 @@
+
+###############################################
+
+#NORMAL DISTRIBUTION
+
+#Aspects
+# 1. If several ind. random variables are normally distributed, their sum will also be.
+# 2. The mean of the sum will be the sum of all individual means.
+# 3. By virtue of ind. var of sum will be sum of individual variances.
+
+#STANDARD NORMAL DISTRIBUTION = a normal distribution with mean = 0 and SD = 1. Used to find p value.
+
+#TRANSFORMATION OF NORMAL RANDOM VARIABLES
+
+#        X - u
+# Z = ----------------
+#         sd
+
+#Ex. Concentration of impurities in semiconductor is norm distributed with mean 127 partspermillion and SD = 22. Only those under 150 are acceptable. What % of semiconductors are acceptable for us? 
+
+import scipy.stats as st
+st.norm.cdf
+
+X = 150
+u = 127
+SD = 22
+
+z = (150-127)/22
+print(z)
+print(st.norm.cdf(z))
+
+#INVERSE TRANSFORMATION = X = u + Zsd
+
+#Ex. Company creates gas cylinder and wants to know the amount of nitrogen gas in the top 10% of cylinders.
+
+u = 124
+p = .1
+sd = 12
+z = st.norm.ppf(.90)
+X = u + z*(sd)
+
+print('Units of volume: ',X)
+
+################################################
+
+#NORMAL APPROXIMATION OF BINOMIAL DISTRIBUTIONS
+
+#used for binomial distributions that have a large  # of trials. A continuity correction is required for X and the sd (np*(1-p))^(1/2) and mean of np.
+
+n = 2058
+p = .6205
+u = n*p
+X1 = 1249.5
+X2 = 1300.5
+
+P1 = (X1-u)/n
+P2 = (X2-u)/n
+
+# NOT YET CORRECT 
+#print(u,P1,P2)
+#
+#print('Probability: ',round(st.norm.cdf(P2)#-st.norm.cdf(P1),4))
+#
+
+#print('P1: ',round(st.norm.cdf(P1),2))
+#print('P2: ',round(st.norm.cdf(P2),2))
