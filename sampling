@@ -1,0 +1,38 @@
+##
+##SAMPLING 
+
+#key terms
+
+#remember: difference between sample statistic, namely, measures of central tendency taken from the sample, and population parameters. 
+
+#sample proportion = x/n where x is the number of successes over n trials. This is used in discreet distributions and is compared to the POPULATION PROPORTION
+
+#Expected Value of the Sample Mean = E(Xhat) = u
+#Standard Deviation of the Sample Mean = Sd/n^1/2
+#Standard Error is used to described the estimated Sd of a statistic
+
+#Central Limit Theorem = When sampling is done from a population with mean u and finite sd, the sampling distribution of the sample mean Xbar will tend to a normal distribution with mean u and sd sd/n^1/2 as n becomes large.
+
+#Central Limit Theorem when sampling for pop proportion = As the sample size n increases, the sampling distribution Phat approaches a normal distribution with mean p and sd sqrt(p(1-p)/n). This estimated sd of Phat is also called, again standard error. 
+
+#The Standardized Sampling Distibution when SD of pop is not known. = (Xhat - u) / (S/n^1/2). where S, the sd of sample is used in place of the unknown pop SD.
+
+#EX. with pop proportion
+# 25% of all Japanese are interested in buying celica. Sample size of 100 from pop. What is prob that >=20% of sample will express interest in Celica? 
+
+u = .25
+q = .2
+n = 100
+p = .25
+
+q = (q-u)/(p*(1-p)/n)**(1/2)
+print(q)
+
+import scipy.stats as st
+print(1-st.norm.cdf(q))
+
+#Degrees of Freedom Calculation = the number of values in an end calculation that are free to vary.
+
+#Ex. If you are counting 100 objects and you are counting to 200. You are free to count the first 99 objects in anyway that you desire meaning that in this example you have 99 degrees of freedom. However even if the first 99 total 1.2 out of 200. The last count must then equate to 198.8 and therefore couln't be chosen freely. In this example, the degrees of freedom were therefore 99. 
+
+
