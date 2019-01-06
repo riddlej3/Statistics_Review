@@ -1,0 +1,69 @@
+#Bernoulli & Binomial
+
+#Bernoulli Formula
+#Binary distribution of x and 0 with x having probability p and 0 1-p
+#P(1) = p
+#E(X) = p
+#V(X) = p*(1-p) = V(X) (variance)
+
+################################################
+
+#BINOMIAL DIS = Bernoulli but with n number of trials rather then just one.
+
+#conditions
+# 1: trials must have a binary result
+# 2: trials must be independent of each other
+# 3: probability must be constant from trial to trial
+
+#                   (n)
+#Formula: P(X=x) =  ( ) p^x*(1-p)^(n-x)
+#                   (r)
+
+#need factorial function
+def factorial(x):
+  if x == 1:
+    return 1
+  else:
+    return x * factorial(x-1)
+
+#EXAMPLE: 5 trials of flipping coin. Heads has a 60% chance of facing up and tales a 40%. What is the prob of a heads facing up 3 out of 5 times.
+
+p1 = .6
+p0 = .4
+n = 5
+r = 3
+
+f1 = factorial(n)/(factorial(r)*(factorial(n-r)))
+#E(X) = n * p
+#V(X) = np*(1-p)
+
+Binomial1 = f1 * p1**r * p0**(n-r)
+Ex = n * p1
+Vx = n*p1*(p0)
+print('Binomial Ex.1: ',Binomial1)
+print('E(X): ',Ex)
+print('V(X): ',round(Vx,2))
+
+#################################################
+
+#NEGATIVE BINOMIAL = rather than finding the prob of r in x trials, how would you find the prob of getting exactly r successes on the xth trial? 
+
+#             (x-1)
+# P(X = x) =  (   ) p^r*(1-p)^(x-r)
+#             (r-1) 
+
+#Using example of pins. What is the probability of successfully creating 2 pins on the 5th trial when the probability of creating a successful pin is = .6?
+
+x = 5
+r = 2
+p = .6
+
+f2 = factorial(x-1)/(factorial(r-1)*factorial((x-1)-(r-1)))
+
+NBinomial1 = f2 * p**r * (1-p)**(x-r)
+Ex2 = r/p
+Vx2 = r*(1-p)/p**2
+
+print('NBinomial Ex.1: ',round(NBinomial1,4))
+print('E(X): ',round(Ex2,2))
+print('V(X): ',round(Vx2,2))
