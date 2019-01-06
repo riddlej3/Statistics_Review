@@ -52,15 +52,28 @@ p = .6205
 u = n*p
 X1 = 1249.5
 X2 = 1300.5
+X3 = 1299.5
+Vx = (u*(1-p))**(1/2)
 
-P1 = (X1-u)/n
-P2 = (X2-u)/n
+P1 = (X1-u)/Vx
+P2 = (X2-u)/Vx
+P3 = (X3-u)/Vx
+perc = .5
 
-# NOT YET CORRECT 
-#print(u,P1,P2)
-#
-#print('Probability: ',round(st.norm.cdf(P2)#-st.norm.cdf(P1),4))
-#
 
-#print('P1: ',round(st.norm.cdf(P1),2))
-#print('P2: ',round(st.norm.cdf(P2),2))
+
+
+print(u,P1,P2)
+
+print('Probability: ',round(st.norm.cdf(P2)-st.norm.cdf(P1),4))
+
+
+print('P1: ',round(st.norm.cdf(P1),3))
+print('P2: ',round(st.norm.cdf(P2),3))
+print('Difference: ',round(st.norm.cdf(P2)-st.norm.cdf(P1),4))
+print('P>=1300 passing students: ',round(1-st.norm.cdf(P3),4))
+
+
+
+
+
