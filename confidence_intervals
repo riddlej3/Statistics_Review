@@ -1,0 +1,90 @@
+#A confidence interval is a range of numbers believed to include an unkonwn population parameter. Associated with the interval is a measure of the confidence we have that the interval does indeed contain the parameter of interest.
+
+#CI for Population Mean when SD is known
+# CI = u +or- 1.96*(SD/sqrt(n) at 95% confidence
+
+#Margin of Error or Sampling Error = the latter half of equation = Zvalue(SD/sqrt(n)).
+
+#Ex. Confidence interval at 95% for mean of 122 an SD of 120 and n of 25
+
+import scipy.stats as st
+
+n = 25
+SD = 20
+u = 122
+CI = .975
+Upper = u + st.norm.ppf(CI)*(SD/n**.5)
+Lower = u - st.norm.ppf(CI)*(SD/n**.5)
+
+print('CI: ',round(Lower,2),round(Upper,2))
+
+################################################
+#Confidence Intervals for u when SD is unknown 
+
+###other words the T distribution####
+
+#Formula = t = (Xhat - u) / (S/sqrt(n)) with variance of S with n-1 degrees of freedom
+
+#Formula = CI w/ tdist = xhat +or- t*(s/sqrt(n))
+
+u = 10.37
+s = 3.5
+CI = .95
+t = st.t.ppf(1-(1-.95)/2,14)
+df = n-1
+n = 15
+
+Upper = u+t*(s/n**.5)
+Lower = u-t*(s/n**.5)
+
+print(round(Lower,4),round(Upper,4))
+
+##############################################
+
+#CI for the Population Proportion when p is not known. 
+
+#turns out that population proportion p can be substituded for phat in the margin of error of the CI equation. Therefore...
+
+#Formula = phat +or- Z*sqrt((phat*q)/n) where q = (1-p)
+
+#Ex. 
+
+
+n = 100
+phat = 34/100
+z = st.norm.ppf(.975)
+ME = ((phat*(1-phat))/n)**.5
+Lower = phat - z * ME
+Upper = phat + z * ME
+
+print(round(Lower,4),round(Upper,4))
+
+###############################################
+
+#CHI Squared distribution = a distribution used on the sum of several independent, squared standard normal random variables. We apply it to problems of estimation of the population variance, using...
+
+#                  (n-1)*s^2
+#FORMULA = X^2 = ---------------- with n-1 Degrees of Freedom
+#                      s^2
+
+#Since X^2 is not semmetric, we can't use equal values such as +of- 1.96 like with Z. Therefore CI of X^2 looks like..
+
+#           (n-1)*s^2          (n-1)*s^2 
+#FORMULA = -------------      --------------
+#          X^2  w/ alpha/2   X^2 w/ 1-alpha/2
+
+#syntax = Critical Value = stats.chi2.ppf(q = .95,df = 4)
+
+#Ex. Machine fills cans of coffee. If variance fill is too high the machine is out of control and needs repair. Random sample of 30 cans gives var estimate of 18,540. At 95% what is the confidence int of variance.
+
+s2 = 18540
+n = 30
+df = (n-1)
+X2 = ((n-1)*s2)/s2
+cv1 = st.chi2.ppf(q=.975,df=29)
+cv2 = st.chi2.ppf(q=.025,df=29)
+
+Lower = (df*s2/cv1)
+Upper = (df*s2/cv2)
+
+print('95% CI around coffee variance: ',round(Lower,2),round(Upper,2))
