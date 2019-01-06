@@ -1,0 +1,30 @@
+#CONTINUOUS DISTRIBUTIONS incl... Uniform and Exponential Distribution
+
+#############################################
+
+#Uniform distrobution is the most simple continuous distribution and usually is used when there is an expected throughput of some process like waiting for a bus or an elevator.
+
+#Ex. if the bus shows up every 20 minutes. What is the probability that upon showing up you will still have 10 minutes to wait? Well the prob is the same no matter when you show up and is therefore uniform.
+
+#FORMULA: f(x) = 1/(b-a) 
+
+a = 0
+b = 20
+Ex = (b-a)/2
+arrival = 10
+Px = (b-arrival)/(b-a)
+
+print('P(x) arriving with less than 10 minutes till arrival: ', Px)
+
+##############################################
+
+#EXPONENTIAL DISTRIBUTION = the exponential distribution is similar to both the uniform distribution and the Geometric distribution. It is similar to both in that it is essentially waiting for an event to occur. Different from the uniform in that the event is random vs. scheduled and different from geometric in that it's continuous.
+
+#Known as memoryless. Proven that it doesn't matter if you start the stopwatch immediately after an event occurance or if you show up later and start it. The expected time to occurence is always the same.
+
+# λ = # of occurences in time period
+
+f(x) = 54.82*math.e**(-l*x)
+x = .5
+
+# NOT EXPLICIT HOW THIS IS CALCULATED FROM MATERIALS
