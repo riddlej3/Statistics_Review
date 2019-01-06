@@ -1,0 +1,29 @@
+## POISSON DISTRIBUTION = a distribution that generally works well for any kind of random variable where the population that the probability is being calculated from is high and the probability of an occurence is low. 
+# also the variables must be randomly distributed and independent of one another
+#usually the poisson is used to calculate the occurence of some given event over a time frame, or in a given location like peole entering a store,or the number of flowers that grow in on a patch of land in summer, or the rate of births in the month of March. 
+
+#Also the binomial distribution naturally takes the shape of the poisson as n trends toward infinity and probability to zero.
+
+#                 λ^x * e^-λ
+#Formula P(X=x) = ------------
+#                     x!
+
+
+#Ex. Nanogram of Plutonium has 2.3 decays/second although the decays themselves are randomly distributed and independent of one another. What's the probability that there will be exactly 3 decays in a selected 2sec period of time. 
+import math
+math.e
+
+t = 2
+x = 3
+r = 2.3/1
+l = r*2
+
+def factorial(x):
+  if x == 1:
+    return 1
+  else:
+    return x*factorial(x-1)
+
+
+Ex = (l**x * math.e**(-l))/factorial(x)
+print('Ex. Poisson: ',round(Ex,2))
