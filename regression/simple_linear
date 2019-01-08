@@ -1,0 +1,80 @@
+# Linear regression is the foundation of model building. By identifying a relationship between variables one is able to potentially predict future dependent variables that are based on a given independent variable.
+
+#Necessary assumptions:
+#1. that the errors in a given plot have mean of zero
+#2. that there exist a constant variance throughout the entire model. 
+#3. relationship between x and y is straight lined.
+#4. the values of the independent var x are assumed fixed. therefore only randomness comes from e.
+
+#When you believe that the residuals contain nothing more than pure randomness, the model gets used for its intended purpose.
+
+#INTENDED PURPOSE OF MODEL: prediction of a variable, control of a variable, and explanation of relationship between 2 variables.
+
+#LINEAR Regression Model follows the straight line formula: Y = ax + b. In our case it's 
+
+#Model formula = Y = B0 + B1(x) + e 
+
+#Conditional mean of Y is = E(Y｜X) = B0 = B1(x)
+#Y is therefore = Average Y for given X + error
+
+###############################################
+#METHOD OF LEAST SQUARES
+
+#b1 estimates ---> B1
+#b0 estimates ---> B0   therefore...
+
+#Yhat = b0+b1(X) where b0 estimates B0 etc..
+#Yhat is the value sitting on the regression line for x. called either fitted or predicted value of y.
+
+#key in MLS is to minimize the sum of the squared errors.
+
+
+#KEY FORMULAS TO DERIVING B0 and B1, the key inputs to finding the line of best fit. 
+
+#                           (∑x)^2
+#SSx = ∑ (x-xbar)^2 = ∑ x^2 - -------
+#                             n
+
+#                            (∑y)^2
+#SSy = ∑(y-ybar)^2 = ∑ y^2 - ------
+#                               n
+
+#                                  (∑x)(∑y)
+#SSxy = ∑(x-xbar)(y-ybar) = ∑xy - ----------
+#                                     n
+
+#+++++++++++++++++++++++++++++++++++++++++
+
+#        SSxy
+#b1 = ----------
+#        SSx
+
+#
+#b0 = ybar - b1(xbar)
+
+#+++++++++++++++++++++++++++++++++++++++++
+
+#. Ex. Study conducted to determin whether Amex cardholders charge more to card when they travel. Studied sample of 25 cardholders and their charges over certain period aligned with the miles traveled. 
+
+miles = [1211,1345,1422,1687,1849,2026,2133,2253,2400,2468,2699,2806,3082,3209,3466,3643,3852,4033,4267,4498,4533,4804,5090,5233,5439]
+dollars = [1802,2405,2005,2511,2332,2305,3016,3385,3090,3694,3371,3998,3555,4692,4244,5298,4801,5147,5738,6420,6059,6426,6321,7026,6964]
+
+SumX2 = sum([i**2 for i in miles])
+SumX = sum(miles)
+n = len(miles)
+SumY = sum(dollars)
+SumXY = sum([miles[i]*dollars[i] for i in list(range(n))])
+Ey = sum(dollars)/n
+Ex = sum(miles)/n
+
+SSx = SumX2 - (SumX)**2/n
+SSxy = SumXY - (SumX)*(SumY)/n
+
+B1 = SSxy/SSx
+B0 = Ey - B1*(Ex)
+
+print('y = ',round(B0,2),' + ',round(B1,2),'(x)')
+print('y = ',B0)
+
+
+
