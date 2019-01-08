@@ -1,0 +1,214 @@
+#The comparison of two populations is an extension of hypothesis testing. The key difference is that rather than using inference to compare samples of an individual data set, one uses the samples of two populations to compare a single phenomenon. 
+
+#BASIC FORMULATION of Paired Difference Test
+
+#         Dhat - u
+# t =   ------------
+#        Sd/sqrt(n)
+
+#Ex. Viewers with and without home shopping. Same population, two sets of data records, one taken one year and the next taken one year later after they provide the customers with at home shopping. Has there been an increase in the amount purchased from u = 0 (mean of original test) to Dhat?
+import scipy.stats as st
+
+u = 0
+Dhat = 32.81
+Sd = 55.75
+n = 16
+df = n-1
+test_statistic = (Dhat-u)/(Sd/n**.5)
+pvalue = st.t.sf(test_statistic,df)
+
+print('Tvalue: ',round(pvalue,4))
+
+#################################################
+
+#CIntervals for the Comparison of two populations
+
+#Formula = Dhat +or- test_statistic * (sd/sqrt(n))
+#Formula = Dhat +or- t*(Sd/sqrtn)
+
+#Ex. stock analyst wants to check to see whether news articles have positive return affect on stock. Choose 50 stocks recommended as winners by editor of newspaper. Compared those stock returns against same stock returns the month before the recommendation.
+
+n=50
+df = n-1
+u=0
+Dhat = .1
+sd = .05
+Ci = .975
+test_statistic = (Dhat - u)/(sd/n**.5)
+CiLower = Dhat - st.t.ppf(Ci,df)*(sd/n**.5)
+CiUpper = Dhat + st.t.ppf(Ci,df)*(sd/n**.5)
+
+print('CI of 95%: ',round(CiLower,4),round(CiUpper,4))
+
+##################################################
+#Test for difference between 2 means using independent random samples
+
+#Ex. comparing the mean time and variance of 2 machines creating independent random sample products. In this case the phenomenon being the time needed to created DIFFERENT products vs. before the measurement was the same (stock price)
+
+#Z formula when SD of population is known
+
+#      (Xhat1 - Xhat2) - (u1-u1) 
+# Z = ----------------------------
+#       sqrt((Var/n2)+(Var/n2))
+
+#We use the T Statistic when Pop SDs are unknown, sample sds are known. Two different T statistic formulas.
+
+#1: When you assume that the pop SDs are the Same
+#     (Xhat1 - Xhat2) - (u1 - u2)
+# t = ---------------------------
+#     Sqrt(s^2((1/n1)+(1/n2))) 
+
+#sd in this case is a form of the combined sample sds from both populations. We combine them to get an estimate of what we believe is the true population SD. Formula below.
+
+#       (n1-1)s1^2 + (n2-1)s2^2
+# s^2 = -----------------------
+#            n1 + n2 - 2
+
+#2: When you assume that the pop SDs are NOT the same.
+#       (Xhat1 - Xhat2) - (u1 - u2)
+# t =  -----------------------------
+#       Sqrt(s1^2/n1 + s2^2/n2)
+
+#the degrees of freedom in this case are given by
+
+#          (s1^2/n + s2^2/n) 
+# df = ----------------------------
+#       (s1^2/n1)^2   (s2^2/n2)
+#       -----------  -----------
+#         n1 - 1       n2 - 1 
+
+#EX of Z test statistic
+# Visa and American Express. Visa to measure average monthly purchase price compared to that of American Express. Null is that there is no difference (two-tailed test)
+
+Xv = 452
+Xa = 523
+Nv = 1200
+Na = 800
+SDv = 212
+SDa = 185
+Z = (Xa-Xv)/((SDv**2/Nv)+(SDa**2/Na))**.5
+print('Zscore: ',round(Z,3))
+
+#Ex. CI for example with Amex vs. Visa
+
+CiLower = Xa-Xv - st.norm.ppf(.975)*((SDv**2/Nv)+(SDa**2/Na))**.5
+CiUpper = Xa-Xv + st.norm.ppf(.975,)*((SDv**2/Nv)+(SDa**2/Na))**.5
+
+print('CI Visa vs. Amex: ',round(CiLower,3),round(CiUpper,3))
+
+#Ex. Subcase 1: Manufacturer of disk players wants to lower price to see if lower price increases sales. 
+
+Xb = 6598
+Xa = 6870
+Nb = 15
+Na = 12
+SDb = 844
+SDa = 669
+SDp = (((Nb-1)*(SDb)**2)+((Na-1)*(SDa)**2))/(Nb+Na-2)
+t2 = (Xa-Xb)/(SDp*((1/Nb)+(1/Na)))**.5
+#H0 = Xb <= Xa
+print('TValue: ',round(t2,3))
+
+#Ex. CI for same example
+df = Nb+Na-2
+tprob = .975
+t1 = st.t.ppf(tprob,df)
+CiLower = (Xa-Xb)-t1*((SDp*((1/Na)+(1/Nb)))**.5)
+CiUpper = (Xa-Xb)+t1*((SDp*((1/Na)+(1/Nb)))**.5)
+
+print('CI: ',round(CiLower,4),round(CiUpper,4))
+
+#################################################
+#A large-sample Test for the difference between two population proportions
+
+#                      phat1-phat2-0
+#Formula for z = -------------------------- 
+#                phat(1-phat)((1/n1)+(1/n2))
+
+#                       x1 + x2
+# phat (combined pp) = ----------
+#                       n1 + n2
+
+#Formula for z when d + 0
+
+#                      phat1-phat2-D
+# z = --------------------------------------------------
+#      sqrt((phat1*(1-phat1))/n1 + (phat2*(1-phat2)/n2))
+
+#Ex. Finance companies auto-loans are being taken over by major automakers. Based on two 100 count samples they infer that they used to issue 53% of all car loans and now issue only 43%. H0: pp1 = pp2. 
+
+x1 = 53
+x2 = 43
+pp1 = .53
+pp2 = .43
+n1 = 100
+n2 = 100
+phat = (x1+x2)/(n1+n2)
+
+z = (pp1-pp2)/(phat*(1-phat)*((1/n1)+(1/n2)))**.5
+
+print('zscore of PProportion: ',round(z,4))
+
+#Ex. of PProportion with D = BankAmerica wants to see if selling travelers checks during sweepstakes time increases checks sold above $2500. During the sweepstakes, 120 of 300 samples bought checks. While no sweepstakes were offered, 140 of 700 samples bought. 
+n1 = 300
+n2 = 700
+x1 = 120
+x2 = 140
+pp1 = x1/n1
+pp2 = x2/n2
+
+D = .1
+#h0 = pp1 > .1 above pp2
+
+z = (pp1-pp2-D)/(pp1*(1-pp1)/n1+pp2*(1-pp2)/n2)**.5
+print(round(z,4))
+
+#CI for the difference between two population proportions
+
+#                               phat1(1-phat1) phat2(1-phat2)
+# CI = phat1-phat2 +or- z*sqrt(--------------  ---------------)
+#                                    n1               n2
+
+#CI of last example (traveler check problem)
+
+CiLower = (pp1-pp2)-st.norm.ppf(.975)*(pp1*(1-pp1)/n1+pp2*(1-pp2)/n2)**.5
+CiUpper = (pp1-pp2)+st.norm.ppf(.975)*(pp1*(1-pp1)/n1+pp2*(1-pp2)/n2)**.5
+print('CI: ',round(CiLower,3),round(CiUpper,3))
+
+#################################################################
+#F DISTIBRUTION: Major distribution used for ANOVA and some regressions
+
+#               X1^2 / k1
+# F(k1,k2) = -----------------
+#               X2^2 / k2
+
+#                 (n-1)*S^2
+#Formula = X^2 = -----------
+#                    SD^2
+
+
+#           S1^2     X1^2*SD1^2 
+#Formula = ------ = ---------
+#           S2*2     X2^2*SD2^2
+
+
+#                           S1^2
+# Which brings us to... F = ----
+#                           S2^2
+
+#In a two-tailed test, we may do one of two things:
+  #1. Follow convention of placing larger sample variance in numerator. Then if test statistic value is greater than a critical point cutting off an area of, say, .05 to its right, we reject the null hypothesis that the two variances are equal at a = .1 (that is double the lvl of significance). This is so because, under the null hypothesis, either of the two sample variances could have been greater than the other, and we are carrying out a two-tailed testo  on one tail of the distribution.
+  #2. May choose not to relabel the populations such that the greater sample variance is on tp. Instead, we find the right-hand critical point for a = .01 or .05. We compute the lef-hand critical point as follows:
+
+  #left hand critical point formula = 1/F(k2,k1). Thus the left hand critical point is the reciprocal of the right-hand critical point obtained from the table and using the reverse order of degrees of freedom for numerator and denominator. 
+
+  #Ex. Insider trading. Sample price variance taken before an insider trading lawsuit and after to see whether the lawsuit decreases variability in pricing. the 25 stock price samples taken before the event give an s^2 = 9.3 and the 24 after give s^2 = 3. Conduct the test at alpha .05
+
+Vb = 9.3
+Va = 3
+Nb = 25
+Na = 24
+f = Vb/Va
+p = st.f.cdf(f,Nb-1,Na-1)
+
+print('Fdist Pvalue: ',round(1-p,4))
