@@ -16,7 +16,7 @@ print('prob of g2 given g1: ',round(.1/.4,2))
 
 # P(A ∩ B) = P(A|B) * P(B)
 
-#if a consulting firm is vying for 2 jobs and know that the P(A) = .6 and that the P(B|A) = .5 what is P(A)?
+#if a consulting firm is vying for 2 jobs and know that the P(A) = .6 and that the P(B|A) = .5 what is P(A ∩ B)?
 
 a2 = .6
 ba = .5
@@ -26,6 +26,7 @@ print('P(intersect ab): ', .6 *.5)
 #40% of execs are women
 #21% of execs are top salary
 #6.4% woman and top salary level execs
+#is the number of women earning top salary the expected % given our information?
 
 #  P(W ∩ TS)
 #  --------   = P(TS)
