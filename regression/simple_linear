@@ -1,3 +1,4 @@
+import scipy.stats as st
 # Linear regression is the foundation of model building. By identifying a relationship between variables one is able to potentially predict future dependent variables that are based on a given independent variable.
 
 #Necessary assumptions:
@@ -17,7 +18,6 @@
 #Conditional mean of Y is = E(Y｜X) = B0 = B1(x)
 #Y is therefore = Average Y for given X + error
 
-###############################################
 #METHOD OF LEAST SQUARES
 
 #b1 estimates ---> B1
@@ -60,6 +60,7 @@ miles = [1211,1345,1422,1687,1849,2026,2133,2253,2400,2468,2699,2806,3082,3209,3
 dollars = [1802,2405,2005,2511,2332,2305,3016,3385,3090,3694,3371,3998,3555,4692,4244,5298,4801,5147,5738,6420,6059,6426,6321,7026,6964]
 
 SumX2 = sum([i**2 for i in miles])
+SumY2 = sum([i**2 for i in dollars])
 SumX = sum(miles)
 n = len(miles)
 SumY = sum(dollars)
@@ -68,6 +69,7 @@ Ey = sum(dollars)/n
 Ex = sum(miles)/n
 
 SSx = SumX2 - (SumX)**2/n
+SSy = SumY2 - (SumY)**2/n
 SSxy = SumXY - (SumX)*(SumY)/n
 
 B1 = SSxy/SSx
@@ -75,6 +77,188 @@ B0 = Ey - B1*(Ex)
 
 print('y = ',round(B0,2),' + ',round(B1,2),'(x)')
 print('y = ',B0)
+
+#################################################
+#Calculating SSE (Sum of Squared Errors) and Mean Squared Errors of the regression.
+
+#Formula = Sum of Squared Errors
+#           SSE = ∑(Y-Yhat)^2
+
+#                        (SSxy)^2
+#               = SSy - -----------
+#                          SSx
+
+#               = SSy - b1(SSxy)
+
+#Formula = Mean Squared Area  = the estimate of the variance of the true regression errors and is a measure of the variation of the data about the regression line. Depends however on the specifics of the data and therefore isn't used to compare against other analyses.
+
+#                   SSE
+#           MSE = -------
+#                  n - 1
+
+#Formula = Standard Deviation Estimate
+
+#            s = sqrt(MSE)
+
+#Formula = The Standard Error of bo
+
+#                    s * sqrt(∑x^2)
+#            s(B0) = --------------  where s = sqrt(MSE)
+#                     sqrt(n*SSx)
+
+#Formula = The Standard Error of b1 (ESPECIALLY IMPORTANT: used to test existence of linear relationship)
+#
+#            s(B1) = s/sqrt(SSx)            
+
+#Confidence intervals for the regression Parameters
+
+#Formula = CI for bo = bo +or- t * s(bo)
+#Formula = CI for b1 = b1 +or- t * s(b1)
+
+#Ex. CI for the Amex Ex. above.
+
+SSE = SSy - B1*(SSxy)
+MSE = SSE/(n-2)
+s = MSE**.5
+Rt_SumX2 = SumX2**.5
+s_bo = s*(Rt_SumX2)/(n*SSx)**.5
+s_b1 = s/SSx**.5
+CiB0lower = B0 - st.t.ppf(.975,n-2)*s_bo
+CiB0upper = B0 + st.t.ppf(.975,n-2)*s_bo
+CiB1lower = B1 - st.t.ppf(.975,n-2)*s_b1
+CiB1upper = B1 + st.t.ppf(.975,n-2)*s_b1
+print('B0 CI: ',round(CiB0lower,2),round(CiB0upper,2))
+print('B1 CI: ',round(CiB1lower,2),round(CiB1upper,2))
+
+#####################################################################
+#Correlation coefficient indicates the correlation of a given variable relationship. Two variables are highly correlated if they move well together.
+
+#p the coefficient can take on any value between -1 and 1
+#p = 0 = no correlation: p = 1 = perfect correlation: p = -1 = perfect negative correlation
+
+#Covariance of two random variables shows the direction of correlation that exists in a linear variable relationship, if indeed there exists a colinear relationship.
+
+#Formula of Covariance = Cov(X,Y) = E[(X-ux)*(Y-uy)]
+
+#Population correlation coefficient conveys information about the relative strength of a linear relationship between two variables. 
+
+#Formula of Population Correlation Coefficient = p = Cov(X,Y)/(SDx*SDy)
+
+#Formula
+#Sample Correlation Coefficient = r = SSxy/sqrt(SSx*SSy)
+
+#Hypothesis test on the Sample Correlation Coefficient r
+
+#
+# Formula = tvalue with n-2 DoF = r / sqrt( (1-r)^2 / (n-2) )
+#
+
+#Ex. Study done to determine existence of colinear relationship between sales genenerated and time spent on sale. r = .424 n = 27
+
+r = .424
+n = 27
+df = n-2
+t = r / ((1-r**2) / (n-2))**(1/2)
+p = st.t.sf(t,df)
+print('tvalue: ',round(t,3))
+print('pvalue of Correlation Coefficient: ',round(p,4))
+
+#########################################################
+#The most important significance test in simple linear regression is one of checking whether the slope parameter B1 is equal to zero. 
+
+#Ex. Back to question of whether or not there is a relationship between miles traveled and dollars spent. t = B1/s(b1)
+n = len(miles)
+SUMx = sum(miles)
+SUMy = sum(dollars)
+SumX2 = sum([i**2 for i in miles])
+SumY2 = sum([i**2 for i in dollars])
+SUMxy = sum([miles[i]*dollars[i] for i in list(range(len(miles)))])
+SSx = SumX2-(SUMx)**2/n
+SSy = SumY2-(SUMy)**2/n
+SSxy = SUMxy - (SUMx)*(SUMy)/n
+B1 = SSxy/SSx
+SSE = SSy - B1*(SSxy)
+MSE = SSE/(n-2)
+s = MSE**.5
+s_B1 = s / (SSx)**.5
+t = B1/s_B1
+p = st.t.sf(t,n-2)
+print('tscore: ',round(t,2),'pvalue: ',round(p,5))
+
+#######################################################
+
+#Coefficient of determination r^2 is a descriptive measure of the strength of the regression relationship, a measure of how well the regression line fits the data.
+
+#CoD can be interpreted as the proportion of the variation in Y that is explained by the regression relationship of Y with X. The higher r^2 is, the better the fit and the higher our confidence in the regression.
+
+# y = individual y variable we are trying to understand
+# yhat = the predicted y variable according to our regression model
+# ybar = the y mean of the entire dataset. 
+
+# SST (Total Sum of Squares) = distance between Y and Ybar
+# SSE (Sum of squares for error) = distance between Y and Yhat. (also known as the unexplained deviation from the mean)
+# SSR (Sum of squares for regress) = distance between Yhat and Ybar (also known as the explained deviation from the mean)
+
+#FORMULA R^2 = SSR/SST 
+
+#r^2 essentially measures the percentage variation between Y and Ybar that is explained by the regression model.
+
+#     SST = SSy
+#     SSR = b1*SSxy
+#     SSE = SSy - B1*SSxy
+
+#Ex.
+
+SSy = SumY2 - (SUMy)**2/n
+SSxy = SUMxy - (SUMx*SUMy)/n
+B1 = SSxy/SSx
+SSR = B1*SSxy
+SST = SSy
+r2 = SSR/SST
+print(round(r2,3))
+
+#######################################################
+
+#Using model for prediction
+
+#Using the model for prediction is simple and simply entails inputing a given x value into the B0+B1(x) line of best fit in order to find Y. Once Y is found, one can do a confidence interval around Yhat for that point in order to say with confidence that the point is above and below the lower and upper range.
+
+#FORMULA: Point Prediction CI:  Yhat +or- t(n-2) * s * sqrt(1+1/n+ ((x-Xbar)^2/SSx))
+
+pointx = 4000
+Ex = sum(miles)/n
+Ey = sum(dollars)/n
+n = len(miles)
+df = n-2
+SUMx = sum(miles)
+SUMy = sum(dollars)
+SUMxy = sum([miles[i]*dollars[i] for i in list(range(len(miles)))])
+SumX2 = sum([i**2 for i in miles])
+SumY2 = sum([i**2 for i in dollars])
+SSx = SumX2 - (SUMx)**2/n
+SSy = SumY2 - (SUMy)**2/n
+SSxy = SUMxy - (SUMx)*(SUMy)/n
+b1 = SSxy/SSx
+b0 = Ey - b1*(Ex)
+SSE = SSy - b1*SSxy
+MSE = SSE/df
+s = MSE**.5
+s_b1 = s/SSx**.5
+r = SSxy/(SSx*SSy)**.5
+SST = SSy
+SSR = b1*SSxy
+r2 = SSR/SST
+Yhat = b0+B1*pointx
+t = st.t.ppf(.975,df)
+Lower = Yhat - st.t.ppf(.975,df)*s*(1+(1/n)+(4000-Ex)**2/SSx)**.5
+Upper = Yhat + st.t.ppf(.975,df)*s*(1+(1/n)+(4000-Ex)**2/SSx)**.5
+print(Lower,Upper)
+print(Yhat)
+print(t)
+
+#For the average of y rather than a specific point (ex. if there were many points with x=4000, the sample size would increase and the confidence would increase)
+#Formula: for Avg. Y = Yhat +or- t*s*sqrt(1/n+(x-xhat)**2/SSx)**.5
+
 
 
 
