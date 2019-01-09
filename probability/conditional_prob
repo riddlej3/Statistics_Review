@@ -5,7 +5,7 @@
 # --------- = P(A|B) #probability of A given B.
 #   P(B)
 
-#a boy is going to ask two girls out on a date. The boy things his probability of getting girl1 to say yes is .40 and that the probability of getting both girl1 and 2 to say yes is .1. What is the probability therefore of getting girl 2 to say yes given the probability that girl1 says yes?
+#a boy is going to ask two girls out on a date. The boy thinks his probability of getting girl1 to say yes is .40 and that the probability of getting both girl1 and 2 to say yes is .1. What is the probability therefore of getting girl 2 to say yes given the probability that girl1 says yes?
 
 i = .1
 g1 = .4
