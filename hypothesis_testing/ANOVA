@@ -1,0 +1,194 @@
+import scipy.stats as st
+#ANOVA is an extension of the two population hypothesis testing and tests for the existence of differences between means for 3+ populations.
+
+#n = n1+n2+n3...ni
+#TestStatistic for one factor ANOVA = F w/ df(r-1) and df(n-r)
+
+#Ho states that the means across each population are statistically the same. There is not enough statistical significance to reject the null
+#H1 states that the probability of the means being the same is very low.
+
+#ASSUMPTIONS
+#1. Assume independent random sampling from each of r populations.
+#2. Assume that the r populations are normally distributed with equal variances.
+
+#MEAN OF THE SAMPLE
+#Formula = Xbar(i) = (Σ x(ij))/n(i)
+
+#GRAND MEAN
+#Formula = Xdoublebar = (ΣΣ x(ij))/n
+
+#KEY: If the r population means are indeed different (i.e., at least 2 pop means are not equal), then the variation of the data pointsabout their respective sample means xbar(i) is likely to be small when compared with the variation of the r sample means about the grand mean. 
+
+#ERROR DEVIATION = the difference between a data point and its sample mean. Errors are denoted by e. 
+#Formula = e(ij) = x(ij) - xbar(i)
+
+#TREATMENT DEVIATION = the difference between a sample mean from the grand mean. 
+#Formula = t(i) = xbar(i) - x(doublebar)
+
+#TOTAL DEVIATION = The total deviation between a data point and the grand mean.
+#Formula = Tot(ij) = x(ij) - x(doublebar)
+
+#TOTAL DEVIATION = TREATMENT + ERROR DEVIATIONS
+
+#IN ORDER TO AVOID AVERAGING TO 0, WHEN OBSERVING ALL DATAPOINTS TOGETHER, WE MUST SQUARE THEM.
+#Ex. t(i)^2 + e(ij)^2 = (xbar(i)-x(doublebar))^2 + (x(ij) - xbar(i))^2
+
+#this can also be shown simply by...
+#Tot(ij)^2 = (x(ij)-x(doublebar))^2
+
+#THEREFORE...
+
+#ΣΣ Tot(ij)^2 = Σ n(i)*t(i)^2 + ΣΣ e(ij)^2
+#Same as SST = SSTR + SSE
+
+#DEGREES OF FREEDOM
+#DG of SST  = n-1
+#DG of SSTR = r-1
+#DG of SSE  = n-r
+
+#DG_SST = DG_SSTR + DG_SSE
+
+#THIS BRINGS US TO THE CONCEPT OF MEAN SQUARES
+#MSTR = SSTR / DG_SSTR
+#MSE  = MSE / DG_MSE
+
+#When the null hypothesis of ANOVA is true and all r population means are equal, MSTR and MSE are two independent unbiased estimators of the common population variance. 
+
+#FINALIZING THE F STATISTIC: Under the assumptions of ANOVA, the ratio MSTR/MSE possesses an F distribution with r-1 degrees of freedom for the numerator and n-r degrees of freedom for the denominator when the null hypothesis is true. 
+
+#F(r-1)(n-r) = MSTR/MSE     ** for one factor anova
+
+#DF TEST EX.
+#A article tries to compare the transparency policies of Microsoft, Google, Apple, and Wal-Mart. Suppose that four independent random samples of 20 accountants each rate the transparency of these four corporations. What are DG for factor, error, and Total
+
+n = 20
+r = 3
+df_mse = n-r
+df_mstr = r-1
+df_tot = n-1
+
+print(df_mse,df_mstr,df_tot)
+
+l1 = [4,5,7,8]
+l2 = [10,11,12,13]
+l3 = [1,2,3]
+l4 = [l1,l2,l3]
+
+n1 = len(l1)
+n2 = len(l2)
+n3 = len(l3)
+
+n = n1+n2+n3
+
+xbar1 = sum(l1)/n1
+xbar2 = sum(l2)/n2
+xbar3 = sum(l3)/n3
+lxbar = [xbar1,xbar2,xbar3]
+r = len(lxbar)
+ln = [n1,n2,n3]
+xbar = (sum(l1)+sum(l2)+sum(l3))/n
+
+l1a = [(i-xbar1)**2 for i in l1]
+l2a = [(i-xbar2)**2 for i in l2]
+l3a = [(i-xbar3)**2 for i in l3]
+
+SSE = sum(l1a)+sum(l2a)+sum(l3a)
+lr = [(i-xbar)**2 for i in lxbar]
+ltr = [lr[i]*ln[i] for i in list(range(len(lr)))]
+SSTR = sum(ltr)
+
+SST = SSE + SSTR
+
+
+df_SSE  = n-r
+df_SSTR = r-1
+df_SST  = n-1
+
+MSTR = SSTR/df_SSTR
+MSE = SSE/df_SSE
+
+F = MSTR/MSE
+print(round(F,2))
+
+
+#FUTHER ANALYSIS WITH ANOVA: In the case of testing ANOVA, obviously if one fails to reject H0, you just leave it as is and assume all pop means are =. If however the Anova shows that the likely hood of the means being different is statistically significant, one continues to analyse each r against each other r to understand where the abnormality lies. 
+
+#1. (SIMPLE): the most simple way of checking is by creating confidence intervals for each r(i) and compare each r to each other r's ci. Doing so will indicate which pair's intervals are not aligned. 
+#2. (Better): the ideal is the TUKEY PAIRWISE COMPARISON TESTS
+
+#TUKEY PAIRWISE COMPARISON TESTS
+
+#Tukey = q * sqrt(MSE)/sqrt(n(i))
+
+#TUKEY Degrees of freedom are = r(numerator) and n-r(denominator). FORMULA NOT GIVEN. MUST USE FUNCTION FOR q
+
+#You use the TUKEY for every possible r pair (calculate using combinations formula) Each should have a Ho of u1 = u2 and an h1 of u1 != u2
+#In this case the test statistic between the two r means is the difference between each. Ex. xbar - xbar2 
+I = abs(xbar1-xbar2)
+print(I)
+#### STUCK CAN'T FIND PYTHON SOLUTION FOR FINDING q in TUKEY TEST
+
+#IF sample sizes don't end up being equal then one must use the Bonferroni or Scheffe method, both of which are non-parametric.
+
+###############################################################
+
+#TWO WAY Anova
+# The two way anova essentially adds a factor to the analysis. For example, rather than just focusing on the difference between the means for the amount of fish caught in lake 1,2,&3, now we also look at the difference in mean fish caught by fisherwoman. Now we seek mean for each lake, and mean for each woman, and INTERACTION of lake and woman.
+
+#In addition to adding SSB, which is solved the same way as SSTR before but using factor 2 means, the interaction is solved for
+
+#SSTR is split to SSA, SSB and SS(ab)
+
+#SSA = ΣΣΣ(xbar(i) - x(doublebar))^2
+#SSB = ΣΣΣ(xbar(j) - x(doublebar))^2
+#SS(AB) = ΣΣΣ(xbar(ij)-xbar(i)-xbar(j)+x(doublebar))^2
+
+#df_SSA = a-1
+#df_SSB = b-1
+#df_SSab = (a-1)(b-1)
+
+#MSA = SSA/df_SSA 
+#MSB = SSB/df_SSB
+#MS(AB) = SS(AB)/(a-1)(b-1)
+
+#EX. 
+#3 cities: TOKYO, LONDON, NEW YORK
+#3 artists' work: Picasso, Chagall, Dali
+
+SSA = 1824
+SSB = 2230
+SSab = 804
+SSE = 8262
+
+
+n1 = 10
+n2 = 10
+n3 = 10
+
+a = 3
+b = 3
+n = n1+n2+n3
+
+df_SSA = a-1
+df_SSB = b-1
+df_SSab = (a-1)*(b-1)
+df_SSE = a*b*(n1-1)
+
+MSA = SSA/df_SSA
+MSB = SSB/df_SSB
+MSab = SSab//df_SSab
+MSE = SSE/df_SSE
+
+Fa = MSA/MSE
+Fb = MSB/MSE
+Fc = MSab/MSE
+print(df_SSE)
+print(round(Fa,2),round(Fb,2),round(Fc,2))
+Pa = 1- st.f.cdf(Fa,df_SSA,df_SSE)
+Pb = 1- st.f.cdf(Fb,df_SSB,df_SSE)
+Pc = 1- st.f.cdf(Fc,df_SSab,df_SSE)
+print(Pa,Pb,Pc)
+
+
+
+
