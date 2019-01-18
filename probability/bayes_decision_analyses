@@ -1,0 +1,166 @@
+#Bayesian Philosophy takes both current data and prior information into account when making statistical statements and at its core is a more complex conditional probability formula
+
+#Formula without complement
+#            P(B|A)*P(A)
+#P(A|B) = -------------------
+#           P(B|Ai)*P(Ai)
+
+#Formula with complement
+#            P(B|A)*P(A)
+#P(A|B) = -------------------
+#     P(B|A)P(A) + P(B|Ac)P(Ac)
+
+#Statisticians generally see themselves as Bayesian or frequentist (meaning that you don't take prior information into account when calculating probability)
+
+#LIKELIHOOD FUNCTION = the set of conditional probabilities P(x|y) for given data x, considered a function of an unkonwn population parameter y. 
+
+#Ex. Analyst wants to predict how much marketshare a given company has. a = prior assumed market share b = probability based on trial. 4 people of 20 use product. b = 4/20. First question. what is the probability of getting 4 given a[0],a[1],a[2]..a[i]. These each get multiplied by probability of marketshare. 
+
+#GOAL = FIND p(aIb)
+
+la = [.1,.2,.3,.4,.5,.6]
+pa = [.05,.15,.2,.3,.2,.1]
+
+n = 20
+r = 4
+b = r/n
+
+def factorial(x):
+  if x == 1:
+    return 1
+  else:
+    return x * factorial(x-1)
+
+def combinations(x,r):
+  return factorial(x)/(factorial(r)*factorial(x-r))
+
+bIa = [round(combinations(n,r)*(la[i]**r)*(1-la[i])**(n-r),4) for i in list(range(len(la)))]
+print(bIa)
+bIa_x_pa = [round(bIa[i]*pa[i],4) for i in list(range(len(la)))]
+aIb = [round(bIa_x_pa[i]/sum(bIa_x_pa),2) for i in list(range(len(la)))]
+print(aIb)
+
+#SEQUENTIAL FEATURE OF BAYESIAN THEORY: one advantage to bayes theorem is that one analysis' posterior probabilities can become the prior data for a subsequent analysis. 
+
+#ex. suppose the same analyst finds another sample following the previous analysis. she can simply use the previous results and add in the new test as follows. n = 16, r = 3, pa = old aIb a = same, b = 3/16
+
+#OBJECTIVE: find p(aIb)
+n = 16
+r = 3
+b = r/n
+
+pa = aIb
+
+bIa = [round(combinations(n,r)*(la[i]**r)*(1-la[i])**(n-r),4) for i in list(range(len(la)))]
+bIa_x_pa = [round(bIa[i]*pa[i],4) for i in list(range(len(la)))]
+aIb = [round(bIa_x_pa[i]/sum(bIa_x_pa),4) for i in list(range(len(la)))]
+print(bIa)
+print(bIa_x_pa)
+print(aIb)
+
+#PERSONAL QUESTION. WHAT IF WE WERE TO START AT THE BEGINNING BUT USE A SAMPLE OF n = 36 and r = 7?
+
+#OBJECTIVE find p(aIb)
+
+#           p(bIa)*p(a)
+# p(aIb) = ---------------
+#          Σ p(bIai)*p(ai)
+
+#because p(bIa)*p(a) = p(bna)
+n = 36
+r = 7
+pa = [.05,.15,.2,.3,.2,.1]
+la = [.1,.2,.3,.4,.5,.6]
+b = 7/36
+
+bIa = [round(combinations(n,r)*(la[i]**r)*(1-la[i])**(n-r),4) for i in list(range(len(la)))]
+bIa_x_pa = [round(bIa[i]*pa[i],4) for i in list(range(len(la)))]
+aIb = [round(bIa_x_pa[i]/sum(bIa_x_pa),4) for i in list(range(len(la)))]
+print(aIb)
+
+#THEY END UP BEING THE SAME. So successfive bayes are the same as the result of having known all trials at the beginning.
+
+#####################################################################
+#BAYES WITH CONTINUOUS PROBABILITY DISTRIBUTIONS
+
+#f(y) described as prior probability density of parameter x. f(xIy) is defined as the conditional desnsity of the data x, given the value of y. This is the LIKELIHOOD FUNCTION
+
+#JOINT DENSITY = f(y,x) = f(xIy)*f(y)
+#therefore
+
+#             f(xIy)*f(y)
+#f(yIx) = ------------------------
+#        tot area under f(y,x)
+
+#THE NORMAL PROBABILITY MODEL
+#given that you have a prior probability distribution and you pull a new sample of random variables from what is a normally distributed population, one can come up with what is a posterior sample mean and a posterior sample variance. 
+
+#Posterior mean = Mii
+
+#      (1/sdi^2)Mi + (n/sd^2)M
+#Mii = -----------------------
+#       (1/sdi^2) + (n/sd^2)
+
+#               1
+#sdii^2 = -------------
+#      (1/sdi^2) + (n/sd^2)
+
+#Since the normal distribution family is CLOSED it means that when the prior distribution of a parameter is normal and the population (or process) is normal, the posterior distribution of the parameter in question is also normal.
+
+#Ex. Stockbroker interested in ROI of stock. Prior knowledge is that stock has 15% return (Mi) annually at sdi of 8. He thus takes sample of last month ROI and uses that to refine view. Sample of n = 10 and mean = 11.54 and sd of 6.8. 
+
+Mi = 15
+sdi = 8
+M = 11.54
+sd = 6.8
+n=10
+
+Mii = round(((1/sdi**2)*Mi + (n/sd**2)*M) / ((1/sdi**2)+(n/sd**2)),4)
+sdii = round((1/((1/sdi**2)+(n/sd**2)))**.5,4)
+
+print(Mii,sdii)
+
+#IF one were to visualize the prior Mi and sdi distribution, one would notice that it is very flat due to there being high variation in the data. This type of starting probability function is known as: DIFFUSE PRIOR. They convey little a priori knowledge about the process in question. Conveys a little knowledge but allows for the data to provide much more info. 
+
+#CREDIBLE SETS = Essentially confidence intervals for continuous probability question using bayes
+
+# Using previous example metrics: Mii +or- 1.96sdii = 11.7 +or- 1.96(2.077) to calculate a credible set with 95% two tailed probability. 
+
+#CREDIBLE SET = Mii +- z * sdii
+
+#Ex2: Shopkeeper wants to estimate mean daily revenue. Mi = 8500 and sdi = 1000   random sample of last 35 days reveals M of 9,210 and sd of 365.
+
+n = 35
+Mi = 8500
+sdi = 1000
+M = 9210
+sd = 365
+
+Mii = round(((1/sdi**2)*Mi + (n/sd**2)*M)/((1/sdi**2)+(n/sd**2)),4)
+sdii = round((1/((1/sdi**2)+(n/sd**2)))**.5,4)
+print(Mii,sdii)
+
+
+#####################################################################
+#DECISION ANALYSIS
+
+#Elements of Decision Analysis
+#1. Actions : anything the decision maker can do
+#2. Chance Occurences : I believe when the unlikely outcome indeed occurs. It may just mean that 
+#3. Probabilities: 
+#4. Final Outcomes
+#5. Additional Information : Each time chance toakes over, a random occurrence takes place. We may be able to acquire additional information, the cost of which obviously is subtracted from the reward. This is the additional information that is referred to here. It should be built into the analysis. 
+#6. Decision: the action decided upon
+
+#Decision trees: Chance nodes indicated by circles and decisions by squares. Perhaps a probability is related to a decision and chance isn't a decision but a subsequent product of a given probability. 
+
+#The solution of a decision tree is achieved by working backward from the final outcomes. Therefore one should start with a Payoff table. What are all of the possible rewards including negative rewards.
+
+#As one works backwards one calculates expected payout at each node. Where there is a decision one should always take the option with the higher expected value. 
+
+#Expected Value = E(X) = Σ x*P(x)
+#therefore
+#Expected outcome at chance node = 100000*.75 + -20000*.25 = 70,000
+
+#Whichever decision route has the highest expected value once you reach the current state space, that is the decision you'd choose.
+
