@@ -24,3 +24,5 @@ choices = 3
 
 print(factorial(toppings)/(factorial(choices)*factorial(toppings-choices)))
 
+def combinations(r,n):
+  return factorial(n)/(factorial(r)*factorial(n-r))
